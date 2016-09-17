@@ -64,7 +64,7 @@
 <article>
   <header>
     <h1 id="sentiment-bukowski">Bukowski's Poems Sentiment Analysis</h1>
-    <p>Posted on jue 25 agosto 2016 in <a href="https://masta-g3.github.io/linear-content/category/data-science.html">data science</a></p>
+    <p>Posted on Thu 25 August 2016 in <a href="https://masta-g3.github.io/linear-content/category/data-science.html">data science</a></p>
   </header>
   <div>
     <style type="text/css">/*!
@@ -1044,17 +1044,16 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Bukowski's-Poems-Sentiment-Analysis">Bukowski's Poems Sentiment Analysis<a class="anchor-link" href="#Bukowski's-Poems-Sentiment-Analysis">&#182;</a></h1><p>As a byproduct of the neural network project that attempts to write a Bukowski poem, I ended up with this pickle file with a large sample of its poems (1363). I'll use the data to perform basic sentiment analysis on the writings, and see what insights can be extracted from them.</p>
+<h1 id="Bukowski&#x27;s-Poems-Sentiment-Analysis">Bukowski's Poems Sentiment Analysis<a class="anchor-link" href="#Bukowski&#x27;s-Poems-Sentiment-Analysis">¶</a></h1><p>As a byproduct of the neural network project that attempts to write a Bukowski poem, I ended up with this pickle file with a large sample of its poems (1363). I'll use the data to perform basic sentiment analysis on the writings, and see what insights can be extracted from them.</p>
 <p>We start by reading the file and loading libraries...</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
 <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
 <span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">PorterStemmer</span>
@@ -1072,128 +1071,109 @@ h6:hover .anchor-link {
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.titlesize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.titlesize'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">'whitegrid'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## The aforementioned pickle file.</span>
-<span class="n">content</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;data/content.pkl&#39;</span><span class="p">)</span>
+<span class="n">content</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">'data/content.pkl'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Flatten all sentences into a single array, also remove START &amp; STOP.</span>
-<span class="n">text_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Flatten all sentences into a single array, also remove START & STOP.</span>
+<span class="n">text_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="p">[</span><span class="s1">'tokens'</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Remove stopwords, punctuations and symbols. </span>
-<span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span> <span class="o">+</span> \
-    <span class="p">[</span><span class="s1">&#39;start_symbol&#39;</span><span class="p">,</span><span class="s1">&#39;stop_symbol&#39;</span><span class="p">]</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">'english'</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span> <span class="o">+</span> \
+    <span class="p">[</span><span class="s1">'start_symbol'</span><span class="p">,</span><span class="s1">'stop_symbol'</span><span class="p">]</span>
 
 <span class="n">text_stop</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_flat</span> \
             <span class="k">if</span> <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">)]</span>
-<span class="c1">#and len(word) &gt; 3</span>
+<span class="c1">#and len(word) > 3</span>
 <span class="c1">## Now we stem the words, and only keep the set.</span>
 <span class="n">ps</span> <span class="o">=</span> <span class="n">PorterStemmer</span><span class="p">()</span>
 <span class="n">text_stem</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">ps</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stop</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Most-Common-Stems-and-Word-Polarity">Most Common Stems and Word Polarity<a class="anchor-link" href="#Most-Common-Stems-and-Word-Polarity">&#182;</a></h2><p>First, I'll look at the most common stemmed words used in his texts. A stem is the form of the word to which affixes can be attached, like run → (runner, running). By doing the analysis this way we can get a sense of the subjects Bukowski focuses on the most.</p>
+<h2 id="Most-Common-Stems-and-Word-Polarity">Most Common Stems and Word Polarity<a class="anchor-link" href="#Most-Common-Stems-and-Word-Polarity">¶</a></h2><p>First, I'll look at the most common stemmed words used in his texts. A stem is the form of the word to which affixes can be attached, like run → (runner, running). By doing the analysis this way we can get a sense of the subjects Bukowski focuses on the most.</p>
 <p>To make the analysis more interesting, I'll remove all stopwords and use the <code>Afinn</code> package to assign a [-5,5] polarity score to each of the words. After this we can filter neutral terms such as verbs (i.e. like, go, know) and uninteresting nouns (people, street, man).</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Word sentiment scorer.</span>
 <span class="n">afinn</span> <span class="o">=</span> <span class="n">Afinn</span><span class="p">()</span>
-<span class="n">commons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)],</span>
-                        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)],</span>
-                        <span class="s1">&#39;score&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">afinn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)]})</span>
+<span class="n">commons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'word'</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)],</span>
+                        <span class="s1">'count'</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)],</span>
+                        <span class="s1">'score'</span> <span class="p">:</span> <span class="p">[</span><span class="n">afinn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">240</span><span class="p">)]})</span>
 
 <span class="c1">## Get only non-neutral words.</span>
-<span class="n">nn_commons</span> <span class="o">=</span> <span class="n">commons</span><span class="p">[</span><span class="o">~</span><span class="n">commons</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">nn_commons</span> <span class="o">=</span> <span class="n">commons</span><span class="p">[</span><span class="o">~</span><span class="n">commons</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">ix</span> <span class="o">=</span> <span class="n">nn_commons</span><span class="o">.</span><span class="n">word</span>
-<span class="n">nn_commons</span> <span class="o">=</span> <span class="n">nn_commons</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+<span class="n">nn_commons</span> <span class="o">=</span> <span class="n">nn_commons</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">'score'</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">'count'</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
 
 <span class="c1">## Generate palette and plot.</span>
 <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nn_commons</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">nn_commons</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">nn_commons</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
+    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">nn_commons</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
                 <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">nn_commons</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Top Words Sentiment&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Top Words Sentiment'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Count'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[31]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x7f481a517350&gt;</pre>
+<pre><matplotlib.text.text at 0x7f481a517350></pre>
 </div>
-
 </div>
-
 <div class="output_area"><div class="prompt"></div>
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDwAAASPCAYAAADiNO84AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xucl3Wd///nZw6QxlBigKhkODpOCpagkArhYhvWZmJ4
@@ -1659,13 +1639,10 @@ Pyg9PV0VFRUKBAJuHxb+j3i5nzlzRmlpafJ6vfJ4PMrKylJZWRm5WyJe5tXV1br66qslSffdd5/2
 AAAAAGAdCg8AAAAAAGAdCg8AAAAAAGAdCg8AAAAAAGAdCg8AAAAAAGAdCg8AAAAAAGAdCg8AAAAA
 AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 ">
-</div>
-
-</div>
-
+</img></div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1674,7 +1651,6 @@ AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In general, the terms tends to the negative polarity, and 2 out of the top 3 positive ones might have been missclassified: <em>like</em> as a preposition/adjective/adverb should have no polarity; <em>love</em> neither needs not to be positive, as when the author writes about it sometimes the tone is otherwise (i.e. <em>Love is a Dog from Hell</em>). Towards the end of the list we do see these more positive terms, some glimpses of hope and beauty.</p>
 <p>The official writer's <a href="https://charlesbukowski.wikispaces.com/Themes?responseToken=04ecb6aa9939fbb17d1c5f9eea062e87c">site</a> mentions <strong>love, sex, drinking</strong> and <strong>dead</strong> as themes central to his work, and this chart seems to validate it.</p>
-
 </div>
 </div>
 </div>
@@ -1683,44 +1659,41 @@ AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="References-to-Gender,-and-their-Associations">References to Gender, and their Associations<a class="anchor-link" href="#References-to-Gender,-and-their-Associations">&#182;</a></h2><p>Even though he regards himself as a loner, Bukowski is constantly describing encounters and interactions with new people. To extract the main subjects behind these interactions, I'll start by classifing each line in the database as <em>male</em> or <em>female</em> related, depending on the precense of the keywords listed below. To account for the fact that sentences sometimes spread over several lines, I'll investigate them in pairs. Below is an example.</p>
+<h2 id="References-to-Gender,-and-their-Associations">References to Gender, and their Associations<a class="anchor-link" href="#References-to-Gender,-and-their-Associations">¶</a></h2><p>Even though he regards himself as a loner, Bukowski is constantly describing encounters and interactions with new people. To extract the main subjects behind these interactions, I'll start by classifing each line in the database as <em>male</em> or <em>female</em> related, depending on the precense of the keywords listed below. To account for the fact that sentences sometimes spread over several lines, I'll investigate them in pairs. Below is an example.</p>
 <p><code>START_SYMBOL she was still a virgin STOP_SYMBOL</code><br>
-<code>START_SYMBOL and a very bad poetess. STOP_SYMBOL</code></p>
+<code>START_SYMBOL and a very bad poetess. STOP_SYMBOL</code></br></p>
 <p>First, we look at how frequent these <em>interactions</em> are.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Gender keywords taken from a blog I can&#39;t recall...</span>
-<span class="n">male_words</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s1">&#39;guy&#39;</span><span class="p">,</span><span class="s1">&#39;spokesman&#39;</span><span class="p">,</span><span class="s1">&#39;chairman&#39;</span><span class="p">,</span><span class="s2">&quot;men&#39;s&quot;</span><span class="p">,</span><span class="s1">&#39;men&#39;</span><span class="p">,</span><span class="s1">&#39;him&#39;</span><span class="p">,</span><span class="s2">&quot;he&#39;s&quot;</span><span class="p">,</span><span class="s1">&#39;his&#39;</span><span class="p">,</span><span class="s1">&#39;boy&#39;</span><span class="p">,</span><span class="s1">&#39;boyfriend&#39;</span><span class="p">,</span>\
-                <span class="s1">&#39;boyfriends&#39;</span><span class="p">,</span><span class="s1">&#39;boys&#39;</span><span class="p">,</span><span class="s1">&#39;brother&#39;</span><span class="p">,</span><span class="s1">&#39;brothers&#39;</span><span class="p">,</span><span class="s1">&#39;dad&#39;</span><span class="p">,</span><span class="s1">&#39;dads&#39;</span><span class="p">,</span><span class="s1">&#39;dude&#39;</span><span class="p">,</span><span class="s1">&#39;father&#39;</span><span class="p">,</span><span class="s1">&#39;fathers&#39;</span><span class="p">,</span>\
-                <span class="s1">&#39;fiance&#39;</span><span class="p">,</span><span class="s1">&#39;gentleman&#39;</span><span class="p">,</span><span class="s1">&#39;gentlemen&#39;</span><span class="p">,</span><span class="s1">&#39;god&#39;</span><span class="p">,</span><span class="s1">&#39;grandfather&#39;</span><span class="p">,</span><span class="s1">&#39;grandpa&#39;</span><span class="p">,</span><span class="s1">&#39;grandson&#39;</span><span class="p">,</span><span class="s1">&#39;groom&#39;</span><span class="p">,</span>\
-                <span class="s1">&#39;he&#39;</span><span class="p">,</span><span class="s1">&#39;himself&#39;</span><span class="p">,</span><span class="s1">&#39;husband&#39;</span><span class="p">,</span><span class="s1">&#39;husbands&#39;</span><span class="p">,</span><span class="s1">&#39;king&#39;</span><span class="p">,</span><span class="s1">&#39;male&#39;</span><span class="p">,</span><span class="s1">&#39;man&#39;</span><span class="p">,</span><span class="s1">&#39;mr&#39;</span><span class="p">,</span><span class="s1">&#39;nephew&#39;</span><span class="p">,</span><span class="s1">&#39;nephews&#39;</span><span class="p">,</span>\
-                <span class="s1">&#39;priest&#39;</span><span class="p">,</span><span class="s1">&#39;prince&#39;</span><span class="p">,</span><span class="s1">&#39;son&#39;</span><span class="p">,</span><span class="s1">&#39;sons&#39;</span><span class="p">,</span><span class="s1">&#39;uncle&#39;</span><span class="p">,</span><span class="s1">&#39;uncles&#39;</span><span class="p">,</span><span class="s1">&#39;waiter&#39;</span><span class="p">,</span><span class="s1">&#39;widower&#39;</span><span class="p">,</span><span class="s1">&#39;widowers&#39;</span><span class="p">])</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Gender keywords taken from a blog I can't recall...</span>
+<span class="n">male_words</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s1">'guy'</span><span class="p">,</span><span class="s1">'spokesman'</span><span class="p">,</span><span class="s1">'chairman'</span><span class="p">,</span><span class="s2">"men's"</span><span class="p">,</span><span class="s1">'men'</span><span class="p">,</span><span class="s1">'him'</span><span class="p">,</span><span class="s2">"he's"</span><span class="p">,</span><span class="s1">'his'</span><span class="p">,</span><span class="s1">'boy'</span><span class="p">,</span><span class="s1">'boyfriend'</span><span class="p">,</span>\
+                <span class="s1">'boyfriends'</span><span class="p">,</span><span class="s1">'boys'</span><span class="p">,</span><span class="s1">'brother'</span><span class="p">,</span><span class="s1">'brothers'</span><span class="p">,</span><span class="s1">'dad'</span><span class="p">,</span><span class="s1">'dads'</span><span class="p">,</span><span class="s1">'dude'</span><span class="p">,</span><span class="s1">'father'</span><span class="p">,</span><span class="s1">'fathers'</span><span class="p">,</span>\
+                <span class="s1">'fiance'</span><span class="p">,</span><span class="s1">'gentleman'</span><span class="p">,</span><span class="s1">'gentlemen'</span><span class="p">,</span><span class="s1">'god'</span><span class="p">,</span><span class="s1">'grandfather'</span><span class="p">,</span><span class="s1">'grandpa'</span><span class="p">,</span><span class="s1">'grandson'</span><span class="p">,</span><span class="s1">'groom'</span><span class="p">,</span>\
+                <span class="s1">'he'</span><span class="p">,</span><span class="s1">'himself'</span><span class="p">,</span><span class="s1">'husband'</span><span class="p">,</span><span class="s1">'husbands'</span><span class="p">,</span><span class="s1">'king'</span><span class="p">,</span><span class="s1">'male'</span><span class="p">,</span><span class="s1">'man'</span><span class="p">,</span><span class="s1">'mr'</span><span class="p">,</span><span class="s1">'nephew'</span><span class="p">,</span><span class="s1">'nephews'</span><span class="p">,</span>\
+                <span class="s1">'priest'</span><span class="p">,</span><span class="s1">'prince'</span><span class="p">,</span><span class="s1">'son'</span><span class="p">,</span><span class="s1">'sons'</span><span class="p">,</span><span class="s1">'uncle'</span><span class="p">,</span><span class="s1">'uncles'</span><span class="p">,</span><span class="s1">'waiter'</span><span class="p">,</span><span class="s1">'widower'</span><span class="p">,</span><span class="s1">'widowers'</span><span class="p">])</span>
 
-<span class="n">female_words</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s1">&#39;heroine&#39;</span><span class="p">,</span><span class="s1">&#39;spokeswoman&#39;</span><span class="p">,</span><span class="s1">&#39;chairwoman&#39;</span><span class="p">,</span><span class="s2">&quot;women&#39;s&quot;</span><span class="p">,</span><span class="s1">&#39;actress&#39;</span><span class="p">,</span><span class="s1">&#39;women&#39;</span><span class="p">,</span><span class="s2">&quot;she&#39;s&quot;</span><span class="p">,</span><span class="s1">&#39;her&#39;</span><span class="p">,</span>\
-                  <span class="s1">&#39;aunt&#39;</span><span class="p">,</span><span class="s1">&#39;aunts&#39;</span><span class="p">,</span><span class="s1">&#39;bride&#39;</span><span class="p">,</span><span class="s1">&#39;daughter&#39;</span><span class="p">,</span><span class="s1">&#39;daughters&#39;</span><span class="p">,</span><span class="s1">&#39;female&#39;</span><span class="p">,</span><span class="s1">&#39;fiancee&#39;</span><span class="p">,</span><span class="s1">&#39;girl&#39;</span><span class="p">,</span>\
-                  <span class="s1">&#39;girlfriend&#39;</span><span class="p">,</span><span class="s1">&#39;girlfriends&#39;</span><span class="p">,</span><span class="s1">&#39;girls&#39;</span><span class="p">,</span><span class="s1">&#39;goddess&#39;</span><span class="p">,</span><span class="s1">&#39;granddaughter&#39;</span><span class="p">,</span><span class="s1">&#39;grandma&#39;</span><span class="p">,</span>\
-                  <span class="s1">&#39;grandmother&#39;</span><span class="p">,</span><span class="s1">&#39;herself&#39;</span><span class="p">,</span><span class="s1">&#39;ladies&#39;</span><span class="p">,</span><span class="s1">&#39;lady&#39;</span><span class="p">,</span><span class="s1">&#39;lady&#39;</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">,</span><span class="s1">&#39;moms&#39;</span><span class="p">,</span><span class="s1">&#39;mother&#39;</span><span class="p">,</span><span class="s1">&#39;mothers&#39;</span><span class="p">,</span>\
-                  <span class="s1">&#39;mrs&#39;</span><span class="p">,</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span><span class="s1">&#39;niece&#39;</span><span class="p">,</span><span class="s1">&#39;nieces&#39;</span><span class="p">,</span><span class="s1">&#39;priestess&#39;</span><span class="p">,</span><span class="s1">&#39;princess&#39;</span><span class="p">,</span><span class="s1">&#39;queens&#39;</span><span class="p">,</span><span class="s1">&#39;she&#39;</span><span class="p">,</span><span class="s1">&#39;sister&#39;</span><span class="p">,</span>\
-                  <span class="s1">&#39;sisters&#39;</span><span class="p">,</span><span class="s1">&#39;waitress&#39;</span><span class="p">,</span><span class="s1">&#39;widow&#39;</span><span class="p">,</span><span class="s1">&#39;widows&#39;</span><span class="p">,</span><span class="s1">&#39;wife&#39;</span><span class="p">,</span><span class="s1">&#39;wives&#39;</span><span class="p">,</span><span class="s1">&#39;woman&#39;</span><span class="p">])</span>
+<span class="n">female_words</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s1">'heroine'</span><span class="p">,</span><span class="s1">'spokeswoman'</span><span class="p">,</span><span class="s1">'chairwoman'</span><span class="p">,</span><span class="s2">"women's"</span><span class="p">,</span><span class="s1">'actress'</span><span class="p">,</span><span class="s1">'women'</span><span class="p">,</span><span class="s2">"she's"</span><span class="p">,</span><span class="s1">'her'</span><span class="p">,</span>\
+                  <span class="s1">'aunt'</span><span class="p">,</span><span class="s1">'aunts'</span><span class="p">,</span><span class="s1">'bride'</span><span class="p">,</span><span class="s1">'daughter'</span><span class="p">,</span><span class="s1">'daughters'</span><span class="p">,</span><span class="s1">'female'</span><span class="p">,</span><span class="s1">'fiancee'</span><span class="p">,</span><span class="s1">'girl'</span><span class="p">,</span>\
+                  <span class="s1">'girlfriend'</span><span class="p">,</span><span class="s1">'girlfriends'</span><span class="p">,</span><span class="s1">'girls'</span><span class="p">,</span><span class="s1">'goddess'</span><span class="p">,</span><span class="s1">'granddaughter'</span><span class="p">,</span><span class="s1">'grandma'</span><span class="p">,</span>\
+                  <span class="s1">'grandmother'</span><span class="p">,</span><span class="s1">'herself'</span><span class="p">,</span><span class="s1">'ladies'</span><span class="p">,</span><span class="s1">'lady'</span><span class="p">,</span><span class="s1">'lady'</span><span class="p">,</span><span class="s1">'mom'</span><span class="p">,</span><span class="s1">'moms'</span><span class="p">,</span><span class="s1">'mother'</span><span class="p">,</span><span class="s1">'mothers'</span><span class="p">,</span>\
+                  <span class="s1">'mrs'</span><span class="p">,</span><span class="s1">'ms'</span><span class="p">,</span><span class="s1">'niece'</span><span class="p">,</span><span class="s1">'nieces'</span><span class="p">,</span><span class="s1">'priestess'</span><span class="p">,</span><span class="s1">'princess'</span><span class="p">,</span><span class="s1">'queens'</span><span class="p">,</span><span class="s1">'she'</span><span class="p">,</span><span class="s1">'sister'</span><span class="p">,</span>\
+                  <span class="s1">'sisters'</span><span class="p">,</span><span class="s1">'waitress'</span><span class="p">,</span><span class="s1">'widow'</span><span class="p">,</span><span class="s1">'widows'</span><span class="p">,</span><span class="s1">'wife'</span><span class="p">,</span><span class="s1">'wives'</span><span class="p">,</span><span class="s1">'woman'</span><span class="p">])</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">m</span><span class="o">=</span><span class="mf">0.</span>
 <span class="n">f</span><span class="o">=</span><span class="mf">0.</span>
 
@@ -1728,41 +1701,35 @@ AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 <span class="n">f_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">sent</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s1">'tokens'</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
     <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">male_words</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">female_words</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">wd</span> <span class="ow">in</span> <span class="p">[</span><span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">([</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sent</span> \
-                   <span class="k">if</span> <span class="p">((</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">)]:</span>
+                   <span class="k">if</span> <span class="p">((</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">></span><span class="mi">3</span><span class="p">)]:</span>
             <span class="n">m_counts</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">m</span><span class="o">+=</span><span class="mi">1</span>
     <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">female_words</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">male_words</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">wd</span> <span class="ow">in</span> <span class="p">[</span><span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">([</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sent</span> \
-                   <span class="k">if</span> <span class="p">((</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">)]:</span>
+                   <span class="k">if</span> <span class="p">((</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">></span><span class="mi">3</span><span class="p">)]:</span>
             <span class="n">f_counts</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">f</span><span class="o">+=</span><span class="mi">1</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="s1">&#39;</span><span class="si">%.2f%%</span><span class="s1"> of sentence are male-related.&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">content</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
-<span class="k">print</span> <span class="s1">&#39;</span><span class="si">%.2f%%</span><span class="s1"> of sentence are female-related.&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="n">content</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="s1">'</span><span class="si">%.2f%%</span><span class="s1"> of sentence are male-related.'</span> <span class="o">%</span><span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">content</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">'</span><span class="si">%.2f%%</span><span class="s1"> of sentence are female-related.'</span> <span class="o">%</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="n">content</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>15.43% of sentence are male-related.
@@ -1770,10 +1737,8 @@ AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1781,60 +1746,49 @@ AGCdfwNel4t9xCWCVAAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>About 25% of the lines make reference to some sort of human interaction. This seems like a reasonable estimate. Now let's investigate what other words the selected lines are correlated with. The plots below show the most common nouns occuring on them, divided by gender.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">f_words</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> \
-    <span class="s1">&#39;word&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">f_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
-              <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;NN&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)],</span> \
-    <span class="s1">&#39;count&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">f_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
-               <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;NN&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)]</span> \
+    <span class="s1">'word'</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">f_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
+              <span class="k">if</span> <span class="p">(</span><span class="s1">'NN'</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">></span> <span class="mi">50</span><span class="p">)],</span> \
+    <span class="s1">'count'</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">f_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
+               <span class="k">if</span> <span class="p">(</span><span class="s1">'NN'</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">></span> <span class="mi">50</span><span class="p">)]</span> \
                        <span class="p">})</span>
 
 <span class="c1">## Manual word labels.</span>
-<span class="n">f_words</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">f_words</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1">## Get only non-neutral words.</span>
 <span class="n">ix</span> <span class="o">=</span> <span class="n">f_words</span><span class="o">.</span><span class="n">word</span>
-<span class="n">f_words</span> <span class="o">=</span> <span class="n">f_words</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+<span class="n">f_words</span> <span class="o">=</span> <span class="n">f_words</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">'type'</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">'count'</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
 
 <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">f_words</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_words</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
+    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_words</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
                 <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">f_words</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Nouns Associated with Females&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Nouns Associated with Females'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[35]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x7f4816ed4810&gt;</pre>
+<pre><matplotlib.text.text at 0x7f4816ed4810></pre>
 </div>
-
 </div>
-
 <div class="output_area"><div class="prompt"></div>
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDgAAASPCAYAAADr309CAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlUVfXi/vHnMGhXwxTFAbXSo3BUHFEppxzIofJeNXEe
@@ -2543,13 +2497,10 @@ hg0bct555+Wggw7Kt771LXME3uSGG27IPvvsk49//OPmCPyvV155Jd/4xjeyZs2aNDY2ZuTIkenV
 q1cuuOCCnZ4jrargAAAAAN6fWs0tKgAAAMD7l4IDAAAAKHsKDgAAAKDsKTgAAACAsqfgAAAAAMqe
 ggMAAAAoewoOAAAAoOwpOAAAAICy9/8BE4ryhQqNOycAAAAASUVORK5CYII=
 ">
-</div>
-
-</div>
-
+</img></div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -2557,59 +2508,48 @@ ggMAAAAoewoOAAAAoOwpOAAAAICy9/8BE4ryhQqNOycAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Asides from the gerunds and other common words, we can see three broad categories of nouns that stand out: those that describe the woman in relationship to their role, those associated to her physical appearance, those related to alcohol. I've color-coded them mixing the last 2 together, since they are relate to Bukowski's central themes.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">m_words</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> \
-    <span class="s1">&#39;word&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">m_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
-              <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;NN&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">)],</span> \
-    <span class="s1">&#39;count&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">m_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
-              <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;NN&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">)]</span> \
+    <span class="s1">'word'</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">m_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
+              <span class="k">if</span> <span class="p">(</span><span class="s1">'NN'</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">></span> <span class="mi">60</span><span class="p">)],</span> \
+    <span class="s1">'count'</span> <span class="p">:</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">m_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> \
+              <span class="k">if</span> <span class="p">(</span><span class="s1">'NN'</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">></span> <span class="mi">60</span><span class="p">)]</span> \
                        <span class="p">})</span>
 <span class="c1">## Manual word labels.</span>
-<span class="n">m_words</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">m_words</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="c1">## Get only non-neutral words.</span>
 <span class="n">ix</span> <span class="o">=</span> <span class="n">m_words</span><span class="o">.</span><span class="n">word</span>
-<span class="n">m_words</span> <span class="o">=</span> <span class="n">m_words</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+<span class="n">m_words</span> <span class="o">=</span> <span class="n">m_words</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">'type'</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">'count'</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
 
 <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">m_words</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">m_words</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
+    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">m_words</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> \
                 <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">m_words</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Nouns Associated with Males&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Nouns Associated with Males'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[36]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x7f4832bef910&gt;</pre>
+<pre><matplotlib.text.text at 0x7f4832bef910></pre>
 </div>
-
 </div>
-
 <div class="output_area"><div class="prompt"></div>
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDgAAASPCAYAAADr309CAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3X18z/Xi//HnZ59ZiYlxctXEPqzRZtiYq6hxXCSVlcuR
@@ -3308,13 +3248,10 @@ oBmhJn3nO9/JFVdcka222mrN5Shf/vKXM2XKFN8jkHXPyGGHHZYbb7zxDX+P1FTBAQAAALw11cwl
 KgAAAMBbl4IDAAAAKD0FBwAAAFB6Cg4AAACg9BQcAAAAQOkpOAAAAIDSU3AAAAAApafgAAAAAErv
 /wG3yPj0btts3gAAAABJRU5ErkJggg==
 ">
-</div>
-
-</div>
-
+</img></div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -3323,7 +3260,6 @@ KgAAAMBbl4IDAAAAKD0FBwAAAFB6Cg4AAACg9BQcAAAAQOkpOAAAAIDSU3AAAAAApafgAAAAAErv
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here I've highlighted two different sets of words: the first one with references to roles and bodyparts, and the second most central to the writer's themes - death, drinking and sex.</p>
 <p>Looking back at the lists, among the 'uninteresting' nouns we see 2 that consistently occur:<em>room</em> and <em>night</em>. Incidentally many of the auther's encounters with other persons occur at this place (his room) at this time.</p>
-
 </div>
 </div>
 </div>
@@ -3332,38 +3268,35 @@ KgAAAMBbl4IDAAAAKD0FBwAAAFB6Cg4AAACg9BQcAAAAQOkpOAAAAIDSU3AAAAAApafgAAAAAErv
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Word2Vec">Word2Vec<a class="anchor-link" href="#Word2Vec">&#182;</a></h2><p>Finally I take a look at the relationship top words have to each other. To do this, I'll take Google's pre-trained <a href="https://code.google.com/archive/p/word2vec/">word2vec model</a> and extract the word vectors for the top occuring non-neutral terms. Each of these vectors is made up by 300 features, so in order to visualize them I use the <code>tsne</code> library to reduce the dimensions to 2. After this we can plot the words on a 2D space.</p>
-
+<h2 id="Word2Vec">Word2Vec<a class="anchor-link" href="#Word2Vec">¶</a></h2><p>Finally I take a look at the relationship top words have to each other. To do this, I'll take Google's pre-trained <a href="https://code.google.com/archive/p/word2vec/">word2vec model</a> and extract the word vectors for the top occuring non-neutral terms. Each of these vectors is made up by 300 features, so in order to visualize them I use the <code>tsne</code> library to reduce the dimensions to 2. After this we can plot the words on a 2D space.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Load Google&#39;s model.</span>
-<span class="n">gmodel</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="s1">&#39;/model/GoogleNews-vectors-negative300.bin&#39;</span><span class="p">,</span> \
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Load Google's model.</span>
+<span class="n">gmodel</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="s1">'/model/GoogleNews-vectors-negative300.bin'</span><span class="p">,</span> \
                                                      <span class="n">binary</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In [79]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">## Get more words to plot.</span>
-<span class="n">commons_ext</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)],</span>
-                        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)],</span>
-                        <span class="s1">&#39;score&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">afinn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)]})</span>
+<span class="n">commons_ext</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'word'</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)],</span>
+                        <span class="s1">'count'</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)],</span>
+                        <span class="s1">'score'</span> <span class="p">:</span> <span class="p">[</span><span class="n">afinn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text_stem</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">700</span><span class="p">)]})</span>
 
 <span class="c1">## Get only non-neutral words.</span>
-<span class="n">nn_commons_ext</span> <span class="o">=</span> <span class="n">commons_ext</span><span class="p">[</span><span class="o">~</span><span class="n">commons_ext</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">0</span><span class="p">])]</span>
+<span class="n">nn_commons_ext</span> <span class="o">=</span> <span class="n">commons_ext</span><span class="p">[</span><span class="o">~</span><span class="n">commons_ext</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">0</span><span class="p">])]</span>
 
 <span class="c1">## Get word2vec dimensions for top words.</span>
 <span class="n">word_x</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3372,29 +3305,27 @@ KgAAAMBbl4IDAAAAKD0FBwAAAFB6Cg4AAACg9BQcAAAAQOkpOAAAAIDSU3AAAAAApafgAAAAAErv
 <span class="n">word_s</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">nn_commons_ext</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">gmodel</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
-        <span class="n">word_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gmodel</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)])</span>
-        <span class="n">word_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">])</span>
-        <span class="n">word_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]))</span>
-        <span class="n">word_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">'word'</span><span class="p">]</span> <span class="ow">in</span> <span class="n">gmodel</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+        <span class="n">word_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gmodel</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">'word'</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)])</span>
+        <span class="n">word_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'word'</span><span class="p">])</span>
+        <span class="n">word_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'score'</span><span class="p">]))</span>
+        <span class="n">word_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'count'</span><span class="p">]))</span>
         
-<span class="n">word_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">word_x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+<span class="n">word_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">word_x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float64'</span><span class="p">)</span>
 
 <span class="c1">## Use t-SNE to reduce dimensions.</span>
 <span class="n">word_viz</span> <span class="o">=</span> <span class="n">bh_sne</span><span class="p">(</span><span class="n">word_x</span><span class="p">,</span> <span class="n">perplexity</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In [81]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">)</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">word_viz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">word_viz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">word_c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">word_s</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
 
@@ -3402,21 +3333,15 @@ KgAAAMBbl4IDAAAAKD0FBwAAAFB6Cg4AAACg9BQcAAAAQOkpOAAAAIDSU3AAAAAApafgAAAAAErv
     <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
         <span class="n">label</span><span class="p">,</span> 
         <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">xytext</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-        <span class="n">textcoords</span> <span class="o">=</span> <span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">ha</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span>
+        <span class="n">textcoords</span> <span class="o">=</span> <span class="s1">'offset points'</span><span class="p">,</span> <span class="n">ha</span> <span class="o">=</span> <span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="s1">'bottom'</span>
         <span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt"></div>
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBgAAAQQCAYAAABIsugEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XlcVXXi//H3ZVc2RURF1LSNEjXAEEsFwbiA27hk5jI5
@@ -4965,21 +4890,8 @@ mDBBbdu29XYk+LB9+/bp97//vU6ePCl/f381atRIr7/+utLS0nTp0iU1btxYGRkZslqt3o4KH7N0
 AACAW4NXblMJAAAAAABuLRQMAAAAAADANAoGAAAAAABgGgUDAAAAAAAwjYIBAAAAAACYRsEAAAAA
 AABMo2AAAAAAAACm/S88S25aFNCVNAAAAABJRU5ErkJggg==
 ">
+</img></div>
 </div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We observe a <strong>sex</strong> related cluster at the bottom left side of the plot, and a second <strong>dead</strong> related one on the top. There's also another group near the sex cluster that we can associate with <strong>love</strong>, made up of words such as  kiss, smile, laught and friend. We don't see too much of <strong>alcohol</strong>, which is probably due to these words being filtered out due to their netural sentiment.</p>
-
 </div>
 </div>
 </div>
@@ -4988,17 +4900,25 @@ AABMo2AAAAAAAACm/S88S25aFNCVNAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Training-a-Word2Vec">Training a Word2Vec<a class="anchor-link" href="#Training-a-Word2Vec">&#182;</a></h2><p>Now I'll will train our own Word2Vec model, using the corpus of poems as input. First I build a class that yields the sentences, for efficiency, however this is not really required with the scale we are working on.</p>
-
+<p>We observe a <strong>sex</strong> related cluster at the bottom left side of the plot, and a second <strong>dead</strong> related one on the top. There's also another group near the sex cluster that we can associate with <strong>love</strong>, made up of words such as  kiss, smile, laught and friend. We don't see too much of <strong>alcohol</strong>, which is probably due to these words being filtered out due to their netural sentiment.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Training-a-Word2Vec">Training a Word2Vec<a class="anchor-link" href="#Training-a-Word2Vec">¶</a></h2><p>Now I'll will train our own Word2Vec model, using the corpus of poems as input. First I build a class that yields the sentences, for efficiency, however this is not really required with the scale we are working on.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[184]:</div>
+<div class="prompt input_prompt">In [184]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">content</span><span class="p">[</span><span class="s1">'tokens'</span><span class="p">]</span>
 
 <span class="c1">## Class to yield lines.</span>
 <span class="k">class</span> <span class="nc">LineSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -5009,23 +4929,21 @@ AABMo2AAAAAAAACm/S88S25aFNCVNAAAAABJRU5ErkJggg==
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_lines</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">line</span>
             
-<span class="n">line_set</span> <span class="o">=</span> <span class="n">LineSet</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">])</span>
+<span class="n">line_set</span> <span class="o">=</span> <span class="n">LineSet</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s1">'tokens'</span><span class="p">])</span>
 
 <span class="c1">## Generate model with prunning.</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">gensim</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">line_set</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> 
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In [78]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">)</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">word_viz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">word_viz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">word_c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">word_s</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
 
@@ -5033,21 +4951,15 @@ AABMo2AAAAAAAACm/S88S25aFNCVNAAAAABJRU5ErkJggg==
     <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
         <span class="n">label</span><span class="p">,</span> 
         <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">xytext</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-        <span class="n">textcoords</span> <span class="o">=</span> <span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">ha</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span>
+        <span class="n">textcoords</span> <span class="o">=</span> <span class="s1">'offset points'</span><span class="p">,</span> <span class="n">ha</span> <span class="o">=</span> <span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="s1">'bottom'</span>
         <span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt"></div>
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBgAAAQQCAYAAABIsugEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XuAV3WdP/7nMNxUYLgooGQWXtNEE9TIK8gdJVAXLcV0
@@ -6612,13 +6524,10 @@ JSVq2rSp5s2bJ3d3d2dHRRWqmr9Ro0bpn//8p3x9feXv76+5c+desrYN6oZ3331Xr7zyiiIiIip/
 MAAAAAAAANMoGAAAAAAAgGkUDAAAAAAAwDQKBgAAAAAAYBoFAwAAAAAAMO3/AF+bBRgxRNIjAAAA
 AElFTkSuQmCC
 ">
-</div>
-
-</div>
-
+</img></div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -6627,38 +6536,28 @@ AElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First thing we see is this representation exhibits a more organic structure. We see the 4 main subjects from Bukowski's work interwinded across different clusters, and the relationship between word is significantly different from Google's news model. <em>Friend</em>, <em>bitch</em> and <em>whore</em> are clustered together, and seemingly the opposing words <em>kill</em>, <em>die</em>, <em>love</em> and <em>care</em> show up together. Many interesting relationships inherent to his literature show up here.</p>
 <p>We can also do some word arithmetics::</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In [88]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;love&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">'love'</span><span class="p">,</span> <span class="s1">'woman'</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[88]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[(u&#39;poem&#39;, 0.9280862808227539)]</pre>
-</div>
-
-</div>
-
+<pre>[(u'poem', 0.9280862808227539)]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -6666,38 +6565,28 @@ AElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$love + woman = poem$</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[123]:</div>
+<div class="prompt input_prompt">In [123]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;hell&#39;</span><span class="p">,</span> <span class="s1">&#39;drunk&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">'hell'</span><span class="p">,</span> <span class="s1">'drunk'</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[123]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[(u&#39;kid&#39;, 0.9423174858093262)]</pre>
-</div>
-
-</div>
-
+<pre>[(u'kid', 0.9423174858093262)]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -6705,38 +6594,28 @@ AElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$hell + drunk = kid$</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[124]:</div>
+<div class="prompt input_prompt">In [124]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;friend&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">'friend'</span><span class="p">,</span> <span class="s1">'woman'</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[124]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[(u&#39;poet&#39;, 0.9444721937179565)]</pre>
-</div>
-
-</div>
-
+<pre>[(u'poet', 0.9444721937179565)]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -6744,38 +6623,28 @@ AElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$friend + woman = poet$</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[126]:</div>
+<div class="prompt input_prompt">In [126]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;friend&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;ass&#39;</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">'friend'</span><span class="p">,</span> <span class="s1">'woman'</span><span class="p">,</span> <span class="s1">'ass'</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area"><div class="prompt output_prompt">Out[126]:</div>
-
-
 <div class="output_text output_subarea output_execute_result">
-<pre>[(u&#39;whore&#39;, 0.9562250375747681)]</pre>
-</div>
-
-</div>
-
+<pre>[(u'whore', 0.9562250375747681)]</pre>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -6783,7 +6652,6 @@ AElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$friend + woman + ass = whore$</p>
-
 </div>
 </div>
 </div>
