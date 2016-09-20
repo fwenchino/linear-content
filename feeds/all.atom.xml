@@ -976,7 +976,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Topic-Modeling-on-Bukowski&amp;#x27;s-Poems"&gt;Topic Modeling on Bukowski's Poems&lt;a class="anchor-link" href="#Topic-Modeling-on-Bukowski&amp;#x27;s-Poems"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;On the first post about Bukowski's poems we explored the top words and their polarity. From inspection these groups seemed to be associated to 4 main topics, which also happen to be mentioned on the writter's legacy website. It would be interesting to see if these same topics show up when applicating a generative statistical modeling, such as the Latent Dirichlet Allocation (LDA). To do this and visualize the results I'll use the pyLDAvis and scikit-learn packages.&lt;/p&gt;
+&lt;p&gt;On the first post about Bukowski's poems we explored the top words and their polarity. From inspection these groups seemed to be associated to 4 main topics, which also happen to be mentioned on the writter's legacy website. It would be interesting to see if these same topics show up when applicating a generative statistical modeling, such as the Latent Dirichlet Allocation (LDA). To do this and visualize the results I'll use the pyLDAvis and scikit-learn packages.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1164,7 +1164,7 @@ if(typeof(LDAvis) !== "undefined"){
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Examining each of the word clusters, or topics, we see some very general ones and others having too much noise. However there are a couple of interesting ones:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cluster 3:&lt;/strong&gt; General topic seems to be around love and dead. Other related words are lives, laughter, reason and madness.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cluster 2:&lt;/strong&gt; General topic seems to be around love and dead. Other related words are lives, laughter, reason and madness.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Cluster 5:&lt;/strong&gt; Horse tracks. The author's visits to this place are also a common subject in his writtings, and this gets reflected here.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Cluster 6:&lt;/strong&gt; Alcohol and its multiple manifestations.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Cluster 7:&lt;/strong&gt; Music and art, which are also commonly present on Bukowski's life.&lt;/li&gt;
@@ -2244,7 +2244,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Bukowski&amp;#x27;s-Poems-Sentiment-Analysis"&gt;Bukowski's Poems Sentiment Analysis&lt;a class="anchor-link" href="#Bukowski&amp;#x27;s-Poems-Sentiment-Analysis"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;As a byproduct of the neural network project that attempts to write a Bukowski poem, I ended up with this pickle file with a large sample of its poems (1363). I'll use the data to perform basic sentiment analysis on the writings, and see what insights can be extracted from them.&lt;/p&gt;
+&lt;p&gt;As a byproduct of the &lt;a href="https://github.com/masta-g3/summer_networks/blob/master/bukowski_networks/theano_bukowski.ipynb"&gt;neural network project that attempts to write a Bukowski poem&lt;/a&gt;, I ended up with this pickle file with a large sample of its poems (1363). I'll use the data to perform basic sentiment analysis on the writings, and see what insights can be extracted from them.&lt;/p&gt;
 &lt;p&gt;We start by reading the file and loading libraries...&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
